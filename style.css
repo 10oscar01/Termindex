@@ -1,0 +1,151 @@
+* {
+	margin:0px;
+	padding: 0px;
+}
+body {
+	font-size: 120%;
+	background: #F8F8FF;
+}
+.logout-btn {
+	width: 60px;
+	height: 40px;
+}
+/*--------------index div--------------------*/
+.index-center {
+	float: right;
+	margin: 0px auto;
+
+	width : 800px;
+/*	background-color: red; */
+
+}
+.index-left {
+	float: left;
+	margin-top: 50px;
+/*	background-color: blue;*/
+}
+.index-top {
+	text-align: right;
+	float: top;
+	width: 100%;
+	background-color: #5F9EA0;
+}
+.index-middle {
+	width : 1000px;
+	margin: 0px auto;
+}
+/*---------------------------------------*/
+
+/*--------------term search--------------*/
+.term-search-bar {
+	display: flex ;
+    margin: 0 auto;
+    width: 450px;
+}
+
+.search  {
+    margin: 0 auto;
+    float: left;
+    font-size:30px;
+  }
+.search-btn-div {
+	margin: 0 auto;
+    float: left;
+}
+.termsearch-btn {
+	float: left;
+	padding: 12px;
+	font-size: 15px;
+	color: white;
+	background: #5F9EA0;
+	border: none;
+	border-radius: 5px;
+	width: 75px;
+	height: 45px;
+}
+.search-view {
+	margin: 0 auto;
+	margin-top: 20px;
+	width: 600px;
+}
+.fulltextbtn {
+	float: right;
+	height:1px;
+	padding: 9px 9px;
+}
+/*---------------------------------------*/
+.header {
+	width: 30%;
+	margin: 50px auto 0px;
+	color: white;
+	background: #5F9EA0;
+	text-align: center;
+	border: 1px solid #B0C4DE;
+	border-bottom: none;
+	border-radius: 10px 10px 0px 0px;
+	padding: 20px;
+}
+
+
+form, .content {
+	width: 30%;
+	margin: 0px auto;
+	padding: 20px;
+	border: 1px solid #B0C4DE;
+	background: white;
+	border-radius: 0px 0px 10px 10px;
+
+}
+
+.index-header {
+	width: 800px;
+
+}
+
+.index-content {
+	width: 800px;
+	height: 500px;
+	text-align: right;
+}
+
+.input-group {
+	margin: 10px 0px 10px 0px;
+}
+.input-group label {
+	display: block;
+	text-align: left;
+	margin: 3px;
+}
+.input-group input {
+	height: 30px;
+	width: 93%;
+	padding: 5px 10px;
+	font-size: 16px;
+	border-radius: 5px;
+	border: 1px solid gray;
+}
+.btn {
+	padding: 10px;
+	font-size: 15px;
+	color: white;
+	background: #5F9EA0;
+	border: none;
+	border-radius: 5px;
+	
+}
+.index-btn {
+	margin-left: 20px;
+}
+.success {
+	color: #3C763D;
+	background: #DFF0D8;
+	border: 1px solid #3C763D;
+	margin-bottom: 20px;
+}
+p.message {
+	text-align: center;
+}
+
+#editTerm {
+	font-size: 16px;
+}

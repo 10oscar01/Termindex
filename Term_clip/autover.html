@@ -1,0 +1,47 @@
+<html>
+<head>
+<meta charset="utf-8">
+<script language="javascript" type="text/javascript"></script>
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel = "stylesheet" type="text/css" href="style.css">
+<script type="text/javascript" language="javascript" src="auto.js"></script>
+</head>
+
+
+<body>
+	<div id = "left" class = "left">
+		<p><input id='myfile' type="file"/></p>
+		<p><button id='output' onclick="AutoProcess()">自動</button></p><br/>
+		<p>種子&nbsp<input id='keyword'/><button onclick="AddSeedTerm()">+</button></p>
+		<p>前夾&nbsp<input id='frontword'/></p>
+		<p>後夾&nbsp<input id='backword'/></p>
+		<textarea id="fileContent" cols="30" rows="10"></textarea><br/><br/>
+		<button onclick="GetClip()">抓取夾子</button>
+		<button onclick="GetTerm()">抓取詞彙</button>
+	</div>
+	<div id = "center" class = "center">
+		<div id = "termCandidate" class = "termCandidate">
+			<div id = "termCandTitle" class  = "termCandTitle">
+				<button onclick = "Clean(this.value)" value = "termCandContent">清除</button>候選詞
+			</div>
+			<div id = "termCandContent" class = "termCandContent"></div>
+		</div>
+
+		<div id = "clipCandidate" class = "clipCandidate">
+			<div id = "clipCandTitle" class = "clipCandTitle">
+				<button onclick = "Clean(this.value)" value = "clipCandContent">清除</button>候選夾
+			</div>
+			<div id = "clipCandContent" class = "clipCandContent"></div>
+		</div>
+
+		<div id = "seedTerm" class="seedTerm">種子詞</div>
+		<div id = "seedClip" class="seedClip">種子夾</div>
+	</div>
+	<div id = "trachCan" class = "trashCan">
+		<div id = "trashClip"  class = "trashClip">棄夾</div>
+		<div id = "trashTerm"  class = "trashTerm">棄詞</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html>
+<title>文檔上傳</title>
+	<head>
+		<meta charset="utf-8">
+		<script language="javascript" type="text/javascript"></script>
+		<script src="mark.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/css/result-light.css">
+		<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<link href="css/bootstrap-theme.css" rel="stylesheet">
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/mark.js/7.0.0/mark.min.js"></script>
+		<style type="text/css">
+        body {
+  			margin: 15px;
+   			background-color: #E8FFE8; 
+		}
+  		</style>
+
+		<script>
+			inputstring="";
+			function readFile(){
+				file = this.files[0];
+				var fReader = new FileReader();
+				fReader.onload = function(event){
+					document.getElementById('fileContent').value = event.target.result;
+					inputstring = event.target.result;
+				};
+				fReader.readAsText(file);
+			}
+			window.onload = function(){
+				document.getElementById('myfile').onchange = readFile;
+				
+			}
+			inputstring="";
+			function addata() {
+    			var str = inputstring;
+    			alert(inputstring);
+    			if (str == "") 
+    			{
+       	 		document.getElementById("txtHint").innerHTML = "";
+        		return;
+    			} 
+    			else 
+    			{
+    				
+    				inputstring=inputstring.split("@");//split chapter
+        			var booknum = inputstring[0];
+    				var chapter = inputstring[1];
+            		alert(inputstring);//test_alert
+
+            		//unicode transform
+            		
+        			
+    				
+    			
+
+
+    			
+    				var xmlhttp=[];
+    				for(var i = 2; i < inputstring.length; i++){
+
+    					var s=encodeURIComponent(inputstring[i]);
+    					s=inputstring[i];
+    					var unicode="";
+
+    					for(var j=0;j<s.length;j++)
+    					{
+     						unicode+=parseInt(s[j].charCodeAt(0),10).toString(16)+" ";
+    					}
+    					var unicode=encodeURIComponent(unicode).toUpperCase();
+    					(function (i){
+        		//	if (window.XMLHttpRequest) 
+        		//	{
+            			// code for IE7+, Firefox, Chrome, Opera, Safari
+            			xmlhttp[i] = new XMLHttpRequest();
+        		//	}
+
+        		//	else 
+        		//	{
+            			// code for IE6, IE5
+            	//		xmlhttp[i] = new ActiveXObject("Microsoft.XMLHTTP");
+        		//	}
+        			xmlhttp[i].open("GET","insert.php?t="+inputstring[i]+"&u="+unicode+"&p="+(i-1)+"&b="+inputstring[0]+"&c="+inputstring[1],true);
+
+                    
+                        (function(ind) {
+                            setTimeout(function(){console.log(ind);}, 5000);
+                        })(i);
+                    
+
+        			xmlhttp[i].onreadystatechange = function() 
+        			{
+            			if (xmlhttp[i].readyState == 4 && xmlhttp[i].status == 200) 
+            			{
+               		 		document.getElementById("txtHint").innerHTML = xmlhttp[i].responseText;
+            			}
+        			};
+        			xmlhttp[i].send();
+        			})(i);
+        		}
+
+    			}
+			}
+
+		</script>
+		<script>
+			function showtext(){
+				addata();
+				alert("OK");
+			}
+
+		</script>
+	</head>
+	<body>
+		<p><input id='myfile' type="file"/></p>
+		<textarea id="fileContent" cols="68" rows="10"></textarea>
+		
+		<div>
+		<button onclick="showtext()">上傳資料</button>
+		</div>
+		<div id="txtHint"><b></b></div>
+
+
+	</body>
+</html>

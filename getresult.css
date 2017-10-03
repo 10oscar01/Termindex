@@ -1,0 +1,82 @@
+body
+  {
+    
+    background: #F8F8FF;
+  }
+  mark 
+  {
+    padding: 0;
+    background: orange;
+    color: black;
+  }
+  .Tdiv
+  {
+    position: absolute;
+    top:15%;
+    left: 10%;
+    width: 60%;
+    text-align: 10px;
+    font-family:Microsoft JhengHei;
+    
+  }
+  .line
+  {
+    position: absolute;
+    left: 5%;
+    width: 60%;
+    text-align: 10px;
+    font-family:Microsoft JhengHei;
+    background-color: #FFFFFF;
+  }
+  .phtermresult
+  {
+    position: absolute;
+    top:15%;
+    right: 1%;
+    width: 18%;
+    text-align: 10px;
+    font-family:Microsoft JhengHei;
+    background-color: #FFFFFF;
+    
+  }
+  .search  {
+    margin: 0 auto;
+  }
+  .btn{
+    font-family: Microsoft JhengHei;
+    color:white;
+    font-size:0.6cm;
+  }
+
+  .searchbar {
+    display: flex ;
+    justify-content:center;
+    float: top;
+    margin: 0 auto;
+  }
+
+  .container {
+    margin: 0 auto;
+    margin-top: 0px;
+  }
+
+  .index-top {
+  text-align: right;
+  float: top;
+  width: 100%;
+  background-color: #5F9EA0;
+}
+
+.log-btn {
+  padding: 10px;
+  font-size: 15px;
+  color: white;
+  background: #5F9EA0;
+  border: none;
+  border-radius: 5px;
+  
+}
+
+p.message {
+  text-align: center;
+}
