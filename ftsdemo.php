@@ -1,5 +1,6 @@
 <?php include('server.php');
-    if(empty($_SESSION['username'])) {
+    if(empty($_SESSION['username'])) 
+    {
         header('location: login.php');
     }
 ?>
@@ -26,17 +27,15 @@
     var vars = temp[1].split("&");
 
     //一一顯示出來
-    for (var i = 0; i < vars.length; i++) {
+    for (var i = 0; i < vars.length; i++)
+    {
      var res = decodeURI(vars[i]).split("=");
      document.getElementById("keyword").value = res[1];
-
     }
     showUser();
-
    }
   function showUser() 
   {
-    
     var str=encodeURIComponent(document.getElementById("keyword").value);
     str=document.getElementById("keyword").value;
     var unicode="";
@@ -49,20 +48,32 @@
     $.ajax
             ({
                 url:'getresult.php',
-                data:{q:unicode},
+                data:{uni_term:unicode},
                 dataType: "json",
                 type :'GET',
                 success:function(response) 
                 {
-                    data = response;
-                    
                     var html = [];
-                    for (key in data)
+                    for (key in response)
                     {
-                      html.push('<div>' + data[key]['title'] + data[key]['chapter'] + '<br/>'+ data[key]['text'] + '<br/><br/>'+'</div>');
+                      html.push('<div class="panel panel-default">');
+                      html.push('<div class="panel-heading">' + response[key]['title'] + response[key]['chapter'] + '</div>');
+                      html.push('<div class="panel-body">' + response[key]['text'] + '</div>');
+                      html.push('</div>');
                     }
-
+                    html.push('</table>');
                     document.getElementById('txtHint').innerHTML = html.join('');
+                }
+            });
+    $.ajax
+            ({
+                url:'getresult.php',
+                data:{get_phterm_count:unicode},
+                dataType: "json",
+                type :'GET',
+                success:function(response) 
+                {
+                    alert("response");
                 }
             });
   }
@@ -72,8 +83,6 @@
     {
       showUser();
     }
-
-
     document.getElementById("bt5").onclick = function()
     {
       window.location.href = "index.php?logout=1";
@@ -110,8 +119,6 @@
       </p>
       <?php endif ?>
     </div>
-
-
   <div class="searchbar">
     <table>
       <tr>
