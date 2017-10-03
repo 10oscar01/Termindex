@@ -14,7 +14,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
-  function geturl ()
+  function geturl()
   {
     //URL
     var url = location.href;
@@ -36,6 +36,7 @@
    }
   function showUser() 
   {
+    
     var str=encodeURIComponent(document.getElementById("keyword").value);
     str=document.getElementById("keyword").value;
     var unicode="";
@@ -43,35 +44,27 @@
     {
       unicode+="+"+parseInt(str[i].charCodeAt(0),10).toString(16)+" ";
     }
-    var unicode=encodeURIComponent(unicode);
-    
-    if (str == "") 
-    {
-        document.getElementById("txtHint").innerHTML = "";
-        return;
-    } 
-    else 
-    { 
-        if (window.XMLHttpRequest) 
-        {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } 
-        else 
-        {
-            // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function() 
-        {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
-            {
-                document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
-            }
-        };
-        xmlhttp.open("GET","getresult.php?q="+unicode,true);
-        xmlhttp.send();
-    }
+
+    document.getElementById("txtHint").innerHTML ="";
+    $.ajax
+            ({
+                url:'getresult.php',
+                data:{q:unicode},
+                dataType: "json",
+                type :'GET',
+                success:function(response) 
+                {
+                    data = response;
+                    
+                    var html = [];
+                    for (key in data)
+                    {
+                      html.push('<div>' + data[key]['title'] + data[key]['chapter'] + '<br/>'+ data[key]['text'] + '<br/><br/>'+'</div>');
+                    }
+
+                    document.getElementById('txtHint').innerHTML = html.join('');
+                }
+            });
   }
   window.onload = function() 
   {
@@ -132,9 +125,6 @@
     </table>
   </div>
 <br>
-<script>
-  geturl();
-</script>
 <br>
 <div id="txtHint" class = "container" style="width:60%"><b></b></div>
 
