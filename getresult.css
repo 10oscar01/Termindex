@@ -80,3 +80,8 @@ body
 p.message {
   text-align: center;
 }
+
+#phtermTable {
+  float: right;
+  width: 20%;
+}

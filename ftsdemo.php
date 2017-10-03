@@ -15,6 +15,81 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
+function getTextSearchResult(str)
+{
+  unicode = str;
+  $.ajax
+  ({
+    url:'fulltextsearch/getresult.php',
+    data:{uni_term:unicode},
+    dataType: "json",
+    type :'GET',
+    success:function(response) 
+    {
+      var html = [];
+      for (key in response)
+      {
+        html.push('<div class="panel panel-default">');
+        html.push('<div class="panel-heading">' + response[key]['title'] + response[key]['chapter'] + '</div>');
+        html.push('<div class="panel-body">' + response[key]['text'] + '</div>');
+        html.push('</div>');
+      }
+      document.getElementById('txtHint').innerHTML = html.join('');
+    }
+  });
+}
+
+function getPhtermCountTable(str)
+{
+  alert("123");
+  unicode = str;
+  $.ajax
+  ({
+    url:'fulltextsearch/getphtermcount.php',
+    data:{get_phterm_count:unicode},
+    dataType: "json",
+    type :'GET',
+    success:function(response) 
+    {
+      var html = [];
+      
+      html.push('<ul class="nav nav-tabs">');
+      html.push('<li class="active"><a data-toggle="tab" href="#home">總覽</a></li>');
+      html.push('<li><a data-toggle="tab" href="#menu1">人名</a></li>');
+      html.push('<li><a data-toggle="tab" href="#menu2">地名</a></li>');
+      html.push('<li><a data-toggle="tab" href="#menu3">其他</a></li>');
+      html.push('</ul>');
+      html.push('<div class="tab-content">');
+      html.push('<div id="home" class="tab-pane fade in active">');
+      html.push('<table style="text-align:center;width:100%;float:right;border:2px #D9D9D9 solid;background-color:#FFFFFF;">');
+      html.push('<tr>');
+      html.push('<th style="border:2px #D9D9D9 solid;text-align:center;">詞</th>');
+      html.push('<th style="border:2px #D9D9D9 solid;text-align:center;">次數</th>');
+      html.push('</tr>');
+      
+      for (key in response)
+      {
+        for ( keys in response[key])
+        {
+          html.push('<tr style="border:2px #D9D9D9 solid;">');
+          html.push('<td style="border:2px #D9D9D9 solid;">');
+          html.push('<a id="termA">'+ response[key][keys]['name'] +'</a>');
+          html.push('</td>');
+          html.push('<td style="border:2px #D9D9D9 solid;">' + response[key][keys]['count'] + '</td>');
+          html.push('</tr>');
+        }
+        html.push('</table>');
+        
+      }
+      html.push('</div>');
+      html.push('</div>');
+      
+      
+      document.getElementById('phtermTable').innerHTML = html.join('');
+    }
+  });
+}
+
   function geturl()
   {
     //URL
@@ -45,37 +120,8 @@
     }
 
     document.getElementById("txtHint").innerHTML ="";
-    $.ajax
-            ({
-                url:'getresult.php',
-                data:{uni_term:unicode},
-                dataType: "json",
-                type :'GET',
-                success:function(response) 
-                {
-                    var html = [];
-                    for (key in response)
-                    {
-                      html.push('<div class="panel panel-default">');
-                      html.push('<div class="panel-heading">' + response[key]['title'] + response[key]['chapter'] + '</div>');
-                      html.push('<div class="panel-body">' + response[key]['text'] + '</div>');
-                      html.push('</div>');
-                    }
-                    html.push('</table>');
-                    document.getElementById('txtHint').innerHTML = html.join('');
-                }
-            });
-    $.ajax
-            ({
-                url:'getresult.php',
-                data:{get_phterm_count:unicode},
-                dataType: "json",
-                type :'GET',
-                success:function(response) 
-                {
-                    alert("response");
-                }
-            });
+    getTextSearchResult(unicode);
+    getPhtermCountTable(unicode);
   }
   window.onload = function() 
   {
@@ -133,7 +179,9 @@
   </div>
 <br>
 <br>
-<div id="txtHint" class = "container" style="width:60%"><b></b></div>
+<div id="phtermTable"></div>
+<div id="txtHint" class = "container" style="width:50%"></div>
+
 
 </body>
 </html>
