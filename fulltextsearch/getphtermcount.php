@@ -107,6 +107,9 @@ echo "<th style='"."width:60%;border:2px #D9D9D9 solid;text-align:center;"."'>�
 echo "<th style='"."width:40%;border:2px #D9D9D9 solid;text-align:center;"."'>次數</th>";
 echo "</tr>";
 */
+$total = array();
+$total_name = array();
+$total_count = array();
 
 $character = array();
 $character_name = array();
@@ -125,7 +128,7 @@ while($row = mysqli_fetch_array($findptresult))
   mysqli_select_db($con,"term");
   $findterm = "SELECT term,termindexgref FROM term WHERE guid='".$row['termgref']."';";
   $termresult = mysqli_query($con,$findterm);
-  $classgerf =" ";
+  $classgerf ="";
   while ($trow = mysqli_fetch_array($termresult)) 
   {
     $realterm = $trow['term'];
@@ -150,31 +153,37 @@ while($row = mysqli_fetch_array($findptresult))
   $classresult = mysqli_query($con,$findclass);
   while($crow = mysqli_fetch_array($classresult)) 
   {
+    $total_element = array('name' => $realterm, 'count' => $row['count'] , 'class' => $crow['class'] );
+    array_push( $total ,$total_element );
+
     if( $crow['class'] == "人名")
     {
      
-      $character_element = array( 'name' => $realterm , 'count' => $row['count'] );
+      $character_element = array( 'name' => $realterm , 'count' => $row['count'] , 'class' => $crow['class'] );
       array_push( $character, $character_element );
       
     }
     else if( $crow['class'] == "地名")
     {
-      $local_element = array( 'name' => $realterm , 'count' => $row['count'] );
-      array_push( $local, $character_element );
+      $local_element = array( 'name' => $realterm , 'count' => $row['count'] , 'class' => $crow['class'] );
+      array_push( $local, $local_element );
     }
     else 
     {
-      $other_element = array( 'name' => $realterm , 'count' => $row['count'] );
+      $other_element = array( 'name' => $realterm , 'count' => $row['count'] , 'class' => $crow['class'] );
       array_push( $other, $other_element );
     }
   }
 }
 
 
-$output_array = array();
+$output_array = array( 'total' => $total, 'character' => $character, 'local' => $local, 'other' => $other);
+/*
+array_push($output_array, $total);
 array_push($output_array, $character);
 array_push($output_array, $local);
 array_push($output_array, $other);
+*/
 echo json_encode($output_array);
 
 /*

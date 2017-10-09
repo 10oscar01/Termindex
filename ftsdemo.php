@@ -17,6 +17,7 @@
 <script>
 function getTextSearchResult(str)
 {
+  document.getElementById('txtHint').innerHTML = "";
   unicode = str;
   $.ajax
   ({
@@ -26,22 +27,22 @@ function getTextSearchResult(str)
     type :'GET',
     success:function(response) 
     {
-      var html = [];
+      var htmls = [];
       for (key in response)
       {
-        html.push('<div class="panel panel-default">');
-        html.push('<div class="panel-heading">' + response[key]['title'] + response[key]['chapter'] + '</div>');
-        html.push('<div class="panel-body">' + response[key]['text'] + '</div>');
-        html.push('</div>');
+        htmls.push('<div class="panel panel-default">');
+        htmls.push('<div class="panel-heading">' + response[key]['title'] + response[key]['chapter'] + '</div>');
+        htmls.push('<div class="panel-body">' + response[key]['text'] + '</div>');
+        htmls.push('</div>');
       }
-      document.getElementById('txtHint').innerHTML = html.join('');
+      document.getElementById('txtHint').innerHTML = htmls.join('');
     }
   });
 }
 
 function getPhtermCountTable(str)
 {
-  alert("123");
+  document.getElementById('phtermTable').innerHTML = "";
   unicode = str;
   $.ajax
   ({
@@ -52,23 +53,38 @@ function getPhtermCountTable(str)
     success:function(response) 
     {
       var html = [];
-      
+    
       html.push('<ul class="nav nav-tabs">');
       html.push('<li class="active"><a data-toggle="tab" href="#home">總覽</a></li>');
       html.push('<li><a data-toggle="tab" href="#menu1">人名</a></li>');
       html.push('<li><a data-toggle="tab" href="#menu2">地名</a></li>');
       html.push('<li><a data-toggle="tab" href="#menu3">其他</a></li>');
       html.push('</ul>');
-      html.push('<div class="tab-content">');
-      html.push('<div id="home" class="tab-pane fade in active">');
-      html.push('<table style="text-align:center;width:100%;float:right;border:2px #D9D9D9 solid;background-color:#FFFFFF;">');
-      html.push('<tr>');
-      html.push('<th style="border:2px #D9D9D9 solid;text-align:center;">詞</th>');
-      html.push('<th style="border:2px #D9D9D9 solid;text-align:center;">次數</th>');
-      html.push('</tr>');
       
+      html.push('<div class="tab-content">');
       for (key in response)
       {
+        if ( key == "total" )
+        {
+          html.push('<div id="home" class="tab-pane fade in active">');
+        }
+        else if ( key == "character")
+        {
+          html.push('<div id="menu1" class="tab-pane fade">');
+        }
+        else if ( key == "local")
+        {
+          html.push('<div id="menu2" class="tab-pane fade">');
+        }
+        else if ( key == "other")
+        {
+          html.push('<div id="menu3" class="tab-pane fade">');
+        }
+        html.push('<table style="text-align:center;width:100%;float:right;border:2px #D9D9D9 solid;background-color:#FFFFFF;">');
+        html.push('<tr>');
+        html.push('<th style="border:2px #D9D9D9 solid;text-align:center;">詞</th>');
+        html.push('<th style="border:2px #D9D9D9 solid;text-align:center;">次數</th>');
+        html.push('</tr>');
         for ( keys in response[key])
         {
           html.push('<tr style="border:2px #D9D9D9 solid;">');
@@ -77,13 +93,11 @@ function getPhtermCountTable(str)
           html.push('</td>');
           html.push('<td style="border:2px #D9D9D9 solid;">' + response[key][keys]['count'] + '</td>');
           html.push('</tr>');
-        }
+        }  
         html.push('</table>');
-        
+        html.push('</div>');
       }
       html.push('</div>');
-      html.push('</div>');
-      
       
       document.getElementById('phtermTable').innerHTML = html.join('');
     }
@@ -119,9 +133,11 @@ function getPhtermCountTable(str)
       unicode+="+"+parseInt(str[i].charCodeAt(0),10).toString(16)+" ";
     }
 
-    document.getElementById("txtHint").innerHTML ="";
+
     getTextSearchResult(unicode);
     getPhtermCountTable(unicode);
+   
+    
   }
   window.onload = function() 
   {
@@ -177,9 +193,8 @@ function getPhtermCountTable(str)
       </tr>
     </table>
   </div>
-<br>
-<br>
-<div id="phtermTable"></div>
+
+<div id="phtermTable" class="phtermTable"></div>
 <div id="txtHint" class = "container" style="width:50%"></div>
 
 

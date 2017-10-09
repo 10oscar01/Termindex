@@ -57,7 +57,9 @@ body
 
   .container {
     margin: 0 auto;
-    margin-top: 0px;
+    margin-top: 20px;
+    width: 50%;
+    
   }
 
   .index-top {
@@ -81,7 +83,15 @@ p.message {
   text-align: center;
 }
 
-#phtermTable {
-  float: right;
+.phtermTable {
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-right: 20px;
   width: 20%;
+  height: 400px;
+  float: right;
+}
+ .panel-body  {
+    display:block;
+    overflow:auto;
 }

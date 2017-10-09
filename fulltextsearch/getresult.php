@@ -93,7 +93,7 @@ if (isset($_GET['get_phterm_count']))
 {
   echo "OK";
 }
-
+/*
 //$ptsql="SELECT guid FROM paragraph WHERE MATCH(unitext) AGAINST('".$q."'IN BOOLEAN MODE);";
 $ptsql = $sqls;
 $ptresult = mysqli_query($con,$ptsql);
@@ -111,7 +111,7 @@ while($row = mysqli_fetch_array($ptresult))
 }
 $findptsql=$findptsql." group by termgref ORDER BY count DESC;";
 $findptresult=mysqli_query($con,$findptsql);
-
+*/
 
 
 
