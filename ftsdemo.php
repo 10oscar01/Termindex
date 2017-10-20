@@ -31,7 +31,9 @@ function getTextSearchResult(str)
       for (key in response)
       {
         htmls.push('<div class="panel panel-default">');
-        htmls.push('<div class="panel-heading">' + response[key]['title'] + response[key]['chapter'] + '</div>');
+        htmls.push('<div class="panel-heading">' + response[key]['title']); 
+        htmls.push('<a href="#" onclick = "chapterSearch(\''+ response[key]['chapter'] +'\',\''+ response[key]['bookid'] +'\')">' + response[key]['chapter'] + '</a>');
+        htmls.push('</div>');
         htmls.push('<div class="panel-body">' + response[key]['text'] + '</div>');
         htmls.push('</div>');
       }
@@ -87,9 +89,12 @@ function getPhtermCountTable(str)
         html.push('</tr>');
         for ( keys in response[key])
         {
+          name = response[key][keys]['name'];
           html.push('<tr style="border:2px #D9D9D9 solid;">');
-          html.push('<td style="border:2px #D9D9D9 solid;">');
-          html.push('<a id="termA">'+ response[key][keys]['name'] +'</a>');
+          html.push('<td>');
+          html.push('<a id="termA" href="#" onclick="termAdd(\''+ name +'\')";return false;">'+ "+"  +'</a>');
+          html.push('<a id="termA" href="#" onclick="newTerm(\''+ name +'\')";return false;">'+ name +'</a>');
+          html.push('<a id="termA" href="#" onclick="termAdd(\'-'+ name +'\')";return false;">'+ "-"  +'</a>');
           html.push('</td>');
           html.push('<td style="border:2px #D9D9D9 solid;">' + response[key][keys]['count'] + '</td>');
           html.push('</tr>');
@@ -152,8 +157,9 @@ function getPhtermCountTable(str)
   }
 </script>
 <script>
-  function chapterSearch(chapter1,chapter2,bookid){
-    var chapter = chapter1+'-'+chapter2;
+  function chapterSearch(chapter,bookid){
+    var chapter1 = (chapter.split("-"))[0];
+    var chapter2 = (chapter.split("-"))[1];
     var bookguid = bookid;
 
     open('showchapter.php?chapter='+chapter1+'&pharagraph='+chapter2+'&bookid='+bookguid+"#target",'_blank',
@@ -166,7 +172,7 @@ function getPhtermCountTable(str)
   }
 
   function newTerm(term){
-    document.getElementById("keyword").value= term;
+    document.getElementById("keyword").value = term;
     showUser();
   } 
 </script>
