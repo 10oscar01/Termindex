@@ -1,5 +1,6 @@
 <?php include('server.php');
-    if(empty($_SESSION['username'])) {
+    if(empty($_SESSION['username'])) 
+    {
         header('location: login.php');
     }
 ?>
@@ -14,7 +15,101 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
-  function geturl ()
+function getTextSearchResult(str)
+{
+  document.getElementById('txtHint').innerHTML = "";
+  unicode = str;
+  $.ajax
+  ({
+    url:'fulltextsearch/getresult.php',
+    data:{uni_term:unicode},
+    dataType: "json",
+    type :'GET',
+    success:function(response) 
+    {
+      var htmls = [];
+      for (key in response)
+      {
+        htmls.push('<div class="panel panel-default">');
+        htmls.push('<div class="panel-heading">' + response[key]['title']); 
+        htmls.push('<a href="#" onclick = "chapterSearch(\''+ response[key]['chapter'] +'\',\''+ response[key]['bookid'] +'\')">' + response[key]['chapter'] + '</a>');
+        htmls.push('</div>');
+        htmls.push('<div class="panel-body">' + response[key]['text'] + '</div>');
+        htmls.push('</div>');
+      }
+      document.getElementById('txtHint').innerHTML = htmls.join('');
+    }
+  });
+}
+
+function getPhtermCountTable(str)
+{
+  document.getElementById('phtermTable').innerHTML = "";
+  unicode = str;
+  $.ajax
+  ({
+    url:'fulltextsearch/getphtermcount.php',
+    data:{get_phterm_count:unicode},
+    dataType: "json",
+    type :'GET',
+    success:function(response) 
+    {
+      var html = [];
+    
+      html.push('<ul class="nav nav-tabs">');
+      html.push('<li class="active"><a data-toggle="tab" href="#home">總覽</a></li>');
+      html.push('<li><a data-toggle="tab" href="#menu1">人名</a></li>');
+      html.push('<li><a data-toggle="tab" href="#menu2">地名</a></li>');
+      html.push('<li><a data-toggle="tab" href="#menu3">其他</a></li>');
+      html.push('</ul>');
+      
+      html.push('<div class="tab-content">');
+      for (key in response)
+      {
+        if ( key == "total" )
+        {
+          html.push('<div id="home" class="tab-pane fade in active">');
+        }
+        else if ( key == "character")
+        {
+          html.push('<div id="menu1" class="tab-pane fade">');
+        }
+        else if ( key == "local")
+        {
+          html.push('<div id="menu2" class="tab-pane fade">');
+        }
+        else if ( key == "other")
+        {
+          html.push('<div id="menu3" class="tab-pane fade">');
+        }
+        html.push('<table style="text-align:center;width:100%;float:right;border:2px #D9D9D9 solid;background-color:#FFFFFF;">');
+        html.push('<tr>');
+        html.push('<th style="border:2px #D9D9D9 solid;text-align:center;">詞</th>');
+        html.push('<th style="border:2px #D9D9D9 solid;text-align:center;">次數</th>');
+        html.push('</tr>');
+        for ( keys in response[key])
+        {
+          name = response[key][keys]['name'];
+          html.push('<tr style="border:2px #D9D9D9 solid;">');
+          html.push('<td>');
+          html.push('<a id="termA" href="#" onclick="termAdd(\''+ name +'\')";return false;">'+ "+"  +'</a>');
+          html.push('<a id="termA" href="#" onclick="newTerm(\''+ name +'\')";return false;">'+ name +'</a>');
+          html.push('<a id="termA" href="#" onclick="termAdd(\'-'+ name +'\')";return false;">'+ "-"  +'</a>');
+          html.push('</td>');
+          html.push('<td style="border:2px #D9D9D9 solid;">' + response[key][keys]['count'] + '</td>');
+          html.push('</tr>');
+        }  
+        html.push('</table>');
+        html.push('</div>');
+      }
+      html.push('</div>');
+      
+      document.getElementById('phtermTable').innerHTML = html.join('');
+    }
+  });
+}
+
+  function geturl()
   {
     //URL
     var url = location.href;
@@ -26,13 +121,12 @@
     var vars = temp[1].split("&");
 
     //一一顯示出來
-    for (var i = 0; i < vars.length; i++) {
+    for (var i = 0; i < vars.length; i++)
+    {
      var res = decodeURI(vars[i]).split("=");
      document.getElementById("keyword").value = res[1];
-
     }
     showUser();
-
    }
   function showUser() 
   {
@@ -43,35 +137,12 @@
     {
       unicode+="+"+parseInt(str[i].charCodeAt(0),10).toString(16)+" ";
     }
-    var unicode=encodeURIComponent(unicode);
+
+
+    getTextSearchResult(unicode);
+    getPhtermCountTable(unicode);
+   
     
-    if (str == "") 
-    {
-        document.getElementById("txtHint").innerHTML = "";
-        return;
-    } 
-    else 
-    { 
-        if (window.XMLHttpRequest) 
-        {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } 
-        else 
-        {
-            // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function() 
-        {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
-            {
-                document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
-            }
-        };
-        xmlhttp.open("GET","getresult.php?q="+unicode,true);
-        xmlhttp.send();
-    }
   }
   window.onload = function() 
   {
@@ -79,8 +150,6 @@
     {
       showUser();
     }
-
-
     document.getElementById("bt5").onclick = function()
     {
       window.location.href = "index.php?logout=1";
@@ -88,8 +157,9 @@
   }
 </script>
 <script>
-  function chapterSearch(chapter1,chapter2,bookid){
-    var chapter = chapter1+'-'+chapter2;
+  function chapterSearch(chapter,bookid){
+    var chapter1 = (chapter.split("-"))[0];
+    var chapter2 = (chapter.split("-"))[1];
     var bookguid = bookid;
 
     open('showchapter.php?chapter='+chapter1+'&pharagraph='+chapter2+'&bookid='+bookguid+"#target",'_blank',
@@ -102,7 +172,7 @@
   }
 
   function newTerm(term){
-    document.getElementById("keyword").value= term;
+    document.getElementById("keyword").value = term;
     showUser();
   } 
 </script>
@@ -117,8 +187,6 @@
       </p>
       <?php endif ?>
     </div>
-
-
   <div class="searchbar">
     <table>
       <tr>
@@ -131,12 +199,10 @@
       </tr>
     </table>
   </div>
-<br>
-<script>
-  geturl();
-</script>
-<br>
-<div id="txtHint" class = "container" style="width:60%"><b></b></div>
+
+<div id="phtermTable" class="phtermTable"></div>
+<div id="txtHint" class = "container" style="width:50%"></div>
+
 
 </body>
 </html>
